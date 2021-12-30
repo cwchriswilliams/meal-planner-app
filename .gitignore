@@ -1,0 +1,12 @@
+.calva
+.build
+.clj-kondo
+.cpcache
+.clj-kondo
+.lsp
+.shadow-cljs
+.cljs_node_repl
+.eastwood
+out
+node_modules/
+resources/public/out
