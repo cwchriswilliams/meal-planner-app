@@ -7,6 +7,8 @@
 .shadow-cljs
 .cljs_node_repl
 .eastwood
+.dir-locals.el
+.nrepl-port
 out
 node_modules/
 resources/public/out
