@@ -18,7 +18,7 @@
         field-value (r/atom (:name meal-item-dets))]
     (fn []
       [container
-       [button {:on-click #(rf/dispatch [:navigate-to-element-by-id-panel :meal-item-panel meal-item-id]) :start-icon (r/as-element [arrow-back])} "Back to Meal Item"]
+       [button {:on-click #(rf/dispatch [:navigate-to-element-by-id :meal-item-panel meal-item-id]) :start-icon (r/as-element [arrow-back])} "Back to Meal Item"]
        [stack {:spacing 2}
         [text-field {:variant "outlined"
                      :full-width true

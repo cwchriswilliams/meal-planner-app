@@ -23,10 +23,10 @@
 
 (s/def ::active-panel-details (s/keys :req-un [::active-panel]))
 (s/def ::meal-item-id uuid?)
-(s/def ::name (s/and string? #(< 1 (count %) 50)))
+(s/def ::name (s/and string? #(< 0 (count %) 50)))
 (s/def ::step-id uuid?)
-(s/def ::title (s/and string? #(< 1 (count %) 50)))
-(s/def ::description (s/and string? #(< 1 (count %) 255)))
+(s/def ::title (s/and string? #(< 0 (count %) 50)))
+(s/def ::description (s/and string? #(< 0 (count %) 255)))
 (s/def ::position pos-int?)
 (s/def ::step-details (s/keys :req-un [::title ::position]
                               :opt-un [::description]))
@@ -44,7 +44,7 @@
   (s/valid? ::steps {
     (uuid "5b216f0b-b7a3-4276-a75e-966591fbe2d0") {:title "Bob" :position 7}
     (uuid "5b216f0b-b7a3-4276-a75e-966591fbe2d2") {:title "Fred" :position 8}})
-  )
+)
 
 (def default-db
   {:meal-items example-meal-items

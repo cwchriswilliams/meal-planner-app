@@ -24,7 +24,7 @@
         desc-val (r/atom original-desc-val)]
     (fn []
       [container
-       [button {:on-click #(rf/dispatch [:navigate-to-element-by-id-panel :meal-item-panel meal-item-id]) :start-icon (r/as-element [arrow-back])} "Back to Meal Item"]
+       [button {:on-click #(rf/dispatch [:navigate-to-element-by-id :meal-item-panel meal-item-id]) :start-icon (r/as-element [arrow-back])} "Back to Meal Item"]
        [stack {:spacing 2}
         [paper {:elevation 2}
          [container

@@ -6,7 +6,7 @@
   [field-values]
   (let [live-field-values (map :value field-values)]
     (or (some empty? live-field-values)
-        (some #(= (:value %) (:original-value %)) field-values))))
+        (every? #(= (:value %) (:original-value %)) field-values))))
 
 (defn save-button
   [field-values dispatch-params]

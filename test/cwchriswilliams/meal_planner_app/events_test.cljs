@@ -13,7 +13,6 @@
    :local-store-db
    (fn [_ _] nil)))
 
-
 (defn empty-local-store-db-fixture
   []
   (rf/reg-cofx
@@ -35,7 +34,6 @@
      (assoc cofx :local-store-db
             test-existing-meal-items))))
 
-
 (defn intiialize-local-store-with-db-fixture
   [initial-db]
   (rf/reg-cofx
@@ -43,7 +41,6 @@
    (fn [cofx _]
      (assoc cofx :local-store-db
             initial-db))))
-
 
 (defn save-to-local-store-as-noop
   []
@@ -96,7 +93,6 @@
        (is (= test-existing-meal-items @meal-items))
        (is (spec/valid? ::db/meal-items @meal-items))))))
 
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; favourite-meal test ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (deftest favourite-meal-event-test
@@ -127,8 +123,6 @@
                     (is (= (assoc-in test-existing-meal-items [% :is-favourite?] true)
                            @meal-items))
                     (is (spec/valid? ::db/meal-items @meal-items))))) [(uuid "5b216f0b-b7a3-4276-a75e-966591fbe2d0") (uuid "b081afbd-efb0-4ad9-9724-0c1b742a3220")])))
-
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; unfavourite-meal test ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -167,7 +161,6 @@
   (testing "Naviage with a panel stores navigate effect"
     (is (= {:navigate [:test-panel]} (evt/navigate-fx :ignored [:ignored :test-panel])))))
 
-
 (deftest navigate-to-element-by-id-fx-test
   (testing "navigate-to-element-by-id-fx with a panel and an id stores navigate effect"
     (is (= {:navigate-to-element-by-id [:test-panel :id-to-navigate-to]} (evt/navigate-to-element-by-id-fx :ignored [:ignored :test-panel :id-to-navigate-to])))
@@ -197,36 +190,37 @@
                      (is (spec/valid? ::db/meal-items @meal-items))))))
               (map vector [(uuid "5b216f0b-b7a3-4276-a75e-966591fbe2d0") (uuid "b081afbd-efb0-4ad9-9724-0c1b742a3220")] ["Name-1" "Name-2"]))))
 
-
 (deftest save-meal-item-name-fx-test
   (testing "save-meal-item-name-fx stores navigate effect and updates meal name"
     (is (= {:db {:meal-items {:meal-item-id-1 {:name "new-name-1"}}}
-            :fx [[:navigate [:meal-item-panel :meal-item-id-1]]]}
+            :fx [[:navigate-to-element-by-id [:meal-item-panel :meal-item-id-1]]]}
            (evt/save-meal-item-name-fx {:db {:meal-items {:meal-item-id-1 {:name "original name"}}}} [:ignored :meal-item-id-1 "new-name-1"])))
     (is (= {:db {:meal-items {:meal-item-id-1 {:name "original name"} :meal-item-id-2 {:name "new-name-2"}}}
-            :fx [[:navigate [:meal-item-panel :meal-item-id-2]]]}
+            :fx [[:navigate-to-element-by-id [:meal-item-panel :meal-item-id-2]]]}
            (evt/save-meal-item-name-fx {:db {:meal-items {:meal-item-id-1 {:name "original name"} :meal-item-id-2 {:name "original name-1"}}}} [:ignored :meal-item-id-2 "new-name-2"])))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; delete step test ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(deftest delete-step-event-test
-  (doall (map (fn [step-id]
-                (rf-test/run-test-sync
-                 ((comp existing-local-store-db-fixture save-to-local-store-as-noop))
-                 (let [meal-items (rf/subscribe [:meal-items])]
+(defn build-delete-step-event-test
+  [step-id]
+  (rf-test/run-test-sync
+   ((comp existing-local-store-db-fixture save-to-local-store-as-noop))
+   (let [meal-items (rf/subscribe [:meal-items])]
 
-                   (testing "delete step deletes the selected step"
+     (testing "delete step deletes the selected step"
                     ; event
-                     (let [meal-item-id (uuid "b081afbd-efb0-4ad9-9724-0c1b742a3220")]
-                       (rf/dispatch [:initialize])
-                       (rf/dispatch [:delete-step meal-item-id step-id])
+       (let [meal-item-id (uuid "b081afbd-efb0-4ad9-9724-0c1b742a3220")]
+         (rf/dispatch [:initialize])
+         (rf/dispatch [:delete-step meal-item-id step-id])
 
                     ; expected-result
-                       (is (= (update-in test-existing-meal-items [meal-item-id :steps] dissoc step-id)
-                              @meal-items))
-                       (is (spec/valid? ::db/meal-items @meal-items)))))))
-              [(uuid "a44fcddb-f406-495b-9545-9f0539da6a5e") (uuid "d40ff947-6ef9-4adc-9ebd-304699f91b93")] [])))
+         (is (= (update-in test-existing-meal-items [meal-item-id :steps] dissoc step-id)
+                @meal-items))
+         (is (spec/valid? ::db/meal-items @meal-items)))))))
 
+(deftest delete-step-event-test
+  (doall (map build-delete-step-event-test
+              [(uuid "a44fcddb-f406-495b-9545-9f0539da6a5e") (uuid "d40ff947-6ef9-4adc-9ebd-304699f91b93")])))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; delete meal-item test ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -246,7 +240,6 @@
                             @meal-items)
                          (is (spec/valid? ::db/meal-items @meal-items)))))))
               [(uuid "5b216f0b-b7a3-4276-a75e-966591fbe2d0") (uuid "b081afbd-efb0-4ad9-9724-0c1b742a3220")])))
-
 
 (deftest save-step-details-test
   (doall (map (fn [[meal-item-id step-id new-title new-description expected-position]]

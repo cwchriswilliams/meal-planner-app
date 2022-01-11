@@ -20,7 +20,7 @@
      [icon-button {:on-click #(rf/dispatch [:unfavourite-meal (key meal-item)])} [star]]
      [icon-button {:on-click #(rf/dispatch [:favourite-meal (key meal-item)])} [star-border-outlined]])
    [list-item-button
-    [list-item-text {:on-click #(rf/dispatch [:navigate-to-element-by-id-panel :meal-item-panel (key meal-item)]) :primary (str (:name (val meal-item)))}]]])
+    [list-item-text {:on-click #(rf/dispatch [:navigate-to-element-by-id :meal-item-panel (key meal-item)]) :primary (str (:name (val meal-item)))}]]])
 
 (defn add-new-mean-item []
   [list-item [list-item-button [list-item-icon [add]] [list-item-text {:primary "Add new item"}]]])

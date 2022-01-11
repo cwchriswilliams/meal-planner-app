@@ -55,12 +55,12 @@
         meal-item-dets @(rf/subscribe [:meal-item meal-item-id])]
     [container
      [button {:on-click #(rf/dispatch [:navigate :meal-items-list-panel]) :start-icon (r/as-element [arrow-back])} "Back to Meal List"]
-     [container [typography {:variant "h4"} (:name meal-item-dets) [icon-button {:on-click #(rf/dispatch [:navigate-to-element-by-id-panel :edit-meal-item-name-panel meal-item-id])} [edit]]]]
+     [container [typography {:variant "h4"} (:name meal-item-dets) [icon-button {:on-click #(rf/dispatch [:navigate-to-element-by-id :edit-meal-item-name-panel meal-item-id])} [edit]]]]
      [stack {:spacing 1} (doall (map #(step-card meal-item-id %1) @(rf/subscribe [:meal-item-steps meal-item-id])))
       [paper {:elevation 2}
        [button {:start-icon (r/as-element [add])
                 :sx {:width "100%"}
-                :on-click #(rf/dispatch [:navigate-to-element-by-id-panel :add-step-panel meal-item-id])}
+                :on-click #(rf/dispatch [:navigate-to-element-by-id :add-step-panel meal-item-id])}
         [:div "Add new step"]]]
       [paper {:elevation 2}
        [button {:start-icon (r/as-element [delete])

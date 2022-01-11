@@ -1,13 +1,15 @@
 (ns cwchriswilliams.meal-planner-app.events
-  (:require [cljs.spec.alpha :as spec]
-            [re-frame.core :as rf]
-            [cwchriswilliams.meal-planner-app.db :as mp-db]))
+  (:require
+   [cljs.spec.alpha :as spec]
+   [cwchriswilliams.meal-planner-app.db :as mp-db]
+   [expound.alpha :as expound]
+   [re-frame.core :as rf]))
 
 (defn check-and-throw
   "Throws an exception if `db` doesn't match the Spec `a-spec`."
   [a-spec db]
   (when-not (spec/valid? a-spec db)
-    (throw (ex-info (str "spec check failed: " (spec/explain-str a-spec db)) {}))))
+    (throw (ex-info (str "spec check failed: " (expound/expound a-spec db)) {}))))
 
 (def check-spec-interceptor (rf/after (partial check-and-throw ::mp-db/db)))
 (def check-mi-spec-interceptor (rf/after (partial check-and-throw ::mp-db/meal-items)))
@@ -42,8 +44,8 @@
 (rf/reg-event-db
  :unfavourite-meal
  [(rf/path :meal-items) check-mi-spec-interceptor persist-to-db-interceptor]
- (fn [meal-items [_ meal-name]]
-   (dissoc (get meal-items meal-name) :is-favourite?)))
+ (fn [meal-items [_ meal-id]]
+   (update meal-items meal-id dissoc :is-favourite?)))
 
 (defn navigate-fx [_ [_ panel-to-navigate-to]]
   {:navigate [panel-to-navigate-to]})
@@ -66,11 +68,10 @@
  (fn [db [_ active-panel-details]]
    (assoc db :active-panel-details active-panel-details)))
 
-
 (defn save-meal-item-name-fx
   [{:keys [db]} [_ meal-id new-name]]
   {:db (assoc-in db [:meal-items meal-id :name] new-name)
-   :fx [[:navigate [:meal-item-panel meal-id]]]})
+   :fx [[:navigate-to-element-by-id [:meal-item-panel meal-id]]]})
 
 (rf/reg-event-fx
  :save-meal-item-name
@@ -79,9 +80,9 @@
 
 (rf/reg-event-db
  :delete-step
- [(rf/path :meal-items) check-spec-interceptor persist-to-db-interceptor]
+ [(rf/path :meal-items) check-mi-spec-interceptor persist-to-db-interceptor]
  (fn [meal-items [_ meal-item-id id]]
-   (update-in meal-items [meal-item-id :steps] (dissoc id))))
+           (update-in meal-items [meal-item-id :steps] dissoc id)))
 
 (rf/reg-event-fx
  :delete-meal-item
@@ -89,7 +90,6 @@
  (fn [{:keys [db]} [_ meal-item-id]]
    {:db (assoc db :meal-items (dissoc (:meal-items db) meal-item-id))
     :fx [[:navigate [:meal-items-list-panel]]]}))
-
 
 (defn get-position-for-step
   [steps step-id]
@@ -109,4 +109,4 @@
                                                           :position (get-position-for-step steps step-id)})]
      {:db (-> db
               (assoc-in [:meal-items meal-id :steps step-id] updated-target-step))
-      :fx [[:navigate [:meal-item-panel meal-id]]]})))
+      :fx [[:navigate-to-element-by-id [:meal-item-panel meal-id]]]})))
