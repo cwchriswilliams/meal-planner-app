@@ -12,6 +12,6 @@
     },
     "scripts": {
         "start": "clj -M:dev:shadow-cljs watch app",
-        "test": "clj -M:dev:test:shadow-cljs compile test && node .build/tests/node-tests.js"
+        "test": "clj -M:dev:test:shadow-cljs watch test"
     }
 }

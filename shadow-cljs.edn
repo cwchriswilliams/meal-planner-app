@@ -11,4 +11,5 @@
                  day8.re-frame.tracing.trace-enabled? true}}
           :test {:target :node-test
                  :output-to ".build/tests/node-tests.js"
+                 :autorun true
                  :test-paths ["test"]}}}
