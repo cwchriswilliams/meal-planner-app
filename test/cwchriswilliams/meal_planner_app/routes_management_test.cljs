@@ -23,9 +23,9 @@
 
 (deftest url-for-routes-test
   (testing "Returns nil for empty routes"
-    (is (= (sut/url-for-routes [] :home) nil)))
+    (is (nil? (sut/url-for-routes [] :home))))
   (testing "register-view-for-view-mapor no matching route"
-    (is (= (sut/url-for-routes ["/" {"" :home}] :not-home) nil)))
+    (is (nil? (sut/url-for-routes ["/" {"" :home}] :not-home))))
   (testing "Returns the route for an empty url"
     (is (= (sut/url-for-routes ["/" {"" :home
                                      "meal-item" :meal-item-panel}] :home) "/"))
@@ -53,7 +53,7 @@
   (testing "Throws js/Error for empty routes"
     (is (thrown? js/Error (sut/parse-for-routes [] "/meal-item"))))
   (testing "Returns nil for no matching route"
-    (is (= (sut/parse-for-routes ["/" {"" :home}] "/meal-item") nil)))
+    (is (nil? (sut/parse-for-routes ["/" {"" :home}] "/meal-item"))))
   (testing "Returns true route for no matching route if true route provided"
     (is (= (sut/parse-for-routes ["/" [["" :home]
                                   [true :meal-item]]] "/meal-item") {:handler :meal-item})))

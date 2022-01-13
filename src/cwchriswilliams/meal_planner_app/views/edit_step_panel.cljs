@@ -13,14 +13,14 @@
 
 (defn edit-step-panel
   [details]
-  (let [meal-item-id (uuid (:id details))
-        step-id (if (:step-id details) (uuid (:step-id details)) (random-uuid))
-        meal-item-dets @(rf/subscribe [:meal-item meal-item-id])
-        step-dets (get-in meal-item-dets [:steps step-id])
+  (let [meal-item-id       (uuid (:id details))
+        step-id            (if (:step-id details) (uuid (:step-id details)) (random-uuid))
+        meal-item-dets     @(rf/subscribe [:meal-item meal-item-id])
+        step-dets          (get-in meal-item-dets [:steps step-id])
         original-title-val (:title step-dets)
-        title-val (r/atom original-title-val)
-        original-desc-val (:description step-dets)
-        desc-val (r/atom original-desc-val)]
+        title-val          (r/atom original-title-val)
+        original-desc-val  (:description step-dets)
+        desc-val           (r/atom original-desc-val)]
     (fn []
       [container
        [button {:on-click #(rf/dispatch [:navigate-to-element-by-id :meal-item-panel meal-item-id]) :start-icon (r/as-element [arrow-back])} "Back to Meal Item"]
@@ -29,20 +29,20 @@
          [container
           [stack {:direction "row" :align-items "center" :justify-content "space-between" :sx {:my 3}}
            [container [stack {:sx {:flex-grow 1} :spacing 1}
-                       [text-field {:variant "outlined"
-                                    :full-width true
+                       [text-field {:variant     "outlined"
+                                    :full-width  true
                                     :placeholder "Step title..."
-                                    :InputProps {:sx {:typography "h6"}}
-                                    :value @title-val
-                                    :on-change (fn [e] (reset! title-val (event-value e)))}]
-                       [text-field {:variant "outlined"
-                                    :full-width true
-                                    :multiline true
-                                    :min-rows 3
+                                    :InputProps  {:sx {:typography "h6"}}
+                                    :value       @title-val
+                                    :on-change   (fn [e] (reset! title-val (event-value e)))}]
+                       [text-field {:variant     "outlined"
+                                    :full-width  true
+                                    :multiline   true
+                                    :min-rows    3
                                     :placeholder "Description..."
-                                    :InputProps {:sx {:typography "body1"}}
-                                    :value @desc-val
-                                    :on-change (fn [e] (reset! desc-val (event-value e)))}]]]]]]
+                                    :InputProps  {:sx {:typography "body1"}}
+                                    :value       @desc-val
+                                    :on-change   (fn [e] (reset! desc-val (event-value e)))}]]]]]]
         [stack
          {:direction "row" :justify-content "flex-end" :spacing 2}
          [reset-button [{:value @title-val :original-value original-title-val :atom title-val} {:value @desc-val :original-value original-desc-val :atom desc-val}]]

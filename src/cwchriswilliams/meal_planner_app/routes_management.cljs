@@ -13,7 +13,6 @@
   (when (empty? routes) (throw (js/Error. "Routes not defined")))
   (bidi/match-route routes url))
 
-
 (defn parse [url] (parse-for-routes @-routes-atom url))
 
 (defn url-for-routes
@@ -29,10 +28,10 @@
   (swap! routes-atom assoc-in [1 path] handler)
   (register-view-for-view-map view-map-atom handler handler-fn))
 
-(def register-route (partial
-                     register-route-for-routes-and-view-map
-                     -routes-atom
-                     -view-map-atom))
+(def register (partial
+               register-route-for-routes-and-view-map
+               -routes-atom
+               -view-map-atom))
 
-(defn get-handler-for [panel-id]
+(defn handler-for [panel-id]
   (get @-view-map-atom panel-id))

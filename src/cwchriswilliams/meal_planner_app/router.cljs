@@ -1,23 +1,23 @@
-(ns cwchriswilliams.meal-planner-app.routes
+(ns cwchriswilliams.meal-planner-app.router
   (:require [re-frame.core :as rf]
             [pushy.core :as pushy]
-            [cwchriswilliams.meal-planner-app.routes-management :as routes-m]))
+            [cwchriswilliams.meal-planner-app.routes-management :as routes]))
 
 (defn dispatch
   [route]
   (let [panel (keyword (str (name (:handler route))))]
     (rf/dispatch [:set-active-panel-details {:active-panel panel :details (:route-params route)}])))
 
-(defonce history (pushy/pushy dispatch routes-m/parse))
+(defonce history (pushy/pushy dispatch routes/parse))
 
 
 (defn navigate!
   ([panel-to-naviate-to]
-   (pushy/set-token! history (routes-m/url-for panel-to-naviate-to)))
+   (pushy/set-token! history (routes/url-for panel-to-naviate-to)))
   ([panel-to-naviate-to id]
-   (pushy/set-token! history (routes-m/url-for panel-to-naviate-to :id id)))
+   (pushy/set-token! history (routes/url-for panel-to-naviate-to :id id)))
   ([panel-to-naviate-to id step-id]
-   (pushy/set-token! history (routes-m/url-for panel-to-naviate-to :id id :step-id step-id))))
+   (pushy/set-token! history (routes/url-for panel-to-naviate-to :id id :step-id step-id))))
 
 (defn start!
   []
