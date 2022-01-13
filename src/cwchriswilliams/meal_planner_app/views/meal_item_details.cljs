@@ -15,8 +15,7 @@
             [reagent-mui.icons.arrow-drop-down :refer [arrow-drop-down]]
             [reagent-mui.icons.arrow-drop-up :refer [arrow-drop-up]]
             [reagent-mui.icons.arrow-back :refer [arrow-back]]
-            [reagent-mui.material.icon-button :refer [icon-button]]
-            [cwchriswilliams.meal-planner-app.routes :as routes]))
+            [reagent-mui.material.icon-button :refer [icon-button]]))
 
 (defn delete-step-dialog
   [is-delete-dialog-open? {:keys [title meal-item-id step-id on-cancel-action]}]
@@ -68,6 +67,3 @@
                 :sx {:width "100%"}
                 :on-click #(rf/dispatch [:delete-meal-item meal-item-id])}
         [:div "Delete Meal Item"]]]]]))
-
-(defmethod routes/panel :meal-item-panel [details]
-  #(meal-item-panel (:details details)))

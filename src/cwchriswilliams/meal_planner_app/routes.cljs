@@ -1,44 +1,23 @@
 (ns cwchriswilliams.meal-planner-app.routes
   (:require [re-frame.core :as rf]
             [pushy.core :as pushy]
-            [bidi.bidi :as bidi]))
-
-(defmulti panel :active-panel)
-
-(defmethod panel :default [_] [:div "404 - Panel not found"])
-
-(def routes 
-  [
-      "/" {"" :meal-items-list-panel
-           "meal-items" :meal-items-list-panel
-           ["meal-item/" :id] :meal-item-panel
-           ["meal-item/edit-name/" :id] :edit-meal-item-name-panel
-           ["meal-item/add-step/" :id] :add-step-panel
-           ["meal-item/edit-step/" :id "/" :step-id] :edit-step-panel}
-  ])
-
-(defn parse
-  [url]
-  (bidi/match-route routes url))
+            [cwchriswilliams.meal-planner-app.routes-management :as routes-m]))
 
 (defn dispatch
   [route]
   (let [panel (keyword (str (name (:handler route))))]
     (rf/dispatch [:set-active-panel-details {:active-panel panel :details (:route-params route)}])))
 
-(defonce history (pushy/pushy dispatch parse))
+(defonce history (pushy/pushy dispatch routes-m/parse))
 
-(defn url-for
-  [& panel-to-naviate-to]
-  (apply bidi/path-for (into [routes] panel-to-naviate-to)))
 
 (defn navigate!
   ([panel-to-naviate-to]
-   (pushy/set-token! history (url-for panel-to-naviate-to)))
+   (pushy/set-token! history (routes-m/url-for panel-to-naviate-to)))
   ([panel-to-naviate-to id]
-   (pushy/set-token! history (url-for panel-to-naviate-to :id id)))
+   (pushy/set-token! history (routes-m/url-for panel-to-naviate-to :id id)))
   ([panel-to-naviate-to id step-id]
-   (pushy/set-token! history (url-for panel-to-naviate-to :id id :step-id step-id))))
+   (pushy/set-token! history (routes-m/url-for panel-to-naviate-to :id id :step-id step-id))))
 
 (defn start!
   []

@@ -15,7 +15,8 @@
                                                           (uuid "6c4dc01c-d76e-405d-984c-15b4f50eb9d6") {:title "Wait" :position 3}
                                                           (uuid "63d8fdb9-345c-435c-bd21-9ccee8ac8636") {:title "Yorkies Fry potatoes" :description "Add to a pot and do some stuff" :position 2}
                                                           (uuid "d0ff9351-484e-4f2a-8be6-cfa3645ecfff") {:title "Yorkies Add basil" :description "Just a pinch" :position 4}}}})
-(s/def ::active-panel #{:meal-items-list-panel
+(s/def ::active-panel #{:not-found
+                        :meal-items-list-panel
                         :meal-item-panel
                         :edit-meal-item-name-panel
                         :add-step-panel

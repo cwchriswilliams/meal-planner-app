@@ -7,7 +7,6 @@
             [reagent-mui.material.button :refer [button]]
             [reagent-mui.icons.arrow-back :refer [arrow-back]]
             [cwchriswilliams.meal-planner-app.view-helpers :refer [event-value]]
-            [cwchriswilliams.meal-planner-app.routes :as routes]
             [cwchriswilliams.meal-planner-app.components.save-button :refer [save-button]]
             [cwchriswilliams.meal-planner-app.components.reset-button :refer [reset-button]]))
 
@@ -30,7 +29,3 @@
          {:direction "row" :justify-content "flex-end" :spacing 2}
          [reset-button [{:value @field-value :original-value (:name meal-item-dets) :atom field-value}]]
          [save-button [{:value @field-value :original-value (:name meal-item-dets)}] [:save-meal-item-name meal-item-id]]]]])))
-
-
-(defmethod routes/panel :edit-meal-item-name-panel [details]
-  #(edit-meal-item-name-panel (:details details)))

@@ -9,8 +9,7 @@
             [reagent-mui.material.list-item-icon :refer [list-item-icon]]
             [reagent-mui.icons.add :refer [add]]
             [reagent-mui.icons.star :refer [star]]
-            [reagent-mui.icons.star-border-outlined :refer [star-border-outlined]]
-            [cwchriswilliams.meal-planner-app.routes :as routes]))
+            [reagent-mui.icons.star-border-outlined :refer [star-border-outlined]]))
 
 (defn meal-item-list-item
   [meal-item]
@@ -35,5 +34,3 @@
            (doall (map meal-item-list-item non-favourite-items))
            [divider]
            [add-new-mean-item]]]))
-
-(defmethod routes/panel :meal-items-list-panel [_] meal-item-list)

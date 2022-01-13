@@ -5,7 +5,8 @@
             [cwchriswilliams.meal-planner-app.events]
             [cwchriswilliams.meal-planner-app.subscriptions]
             [cwchriswilliams.meal-planner-app.views :as views]
-            [cwchriswilliams.meal-planner-app.routes :as routes]))
+            [cwchriswilliams.meal-planner-app.routes :as routes]
+            [cwchriswilliams.meal-planner-app.route-view-mapping :as route-mapper]))
 
 
 
@@ -18,6 +19,7 @@
 
 (defn run
   []
+  (route-mapper/register-routes)
   (routes/start!)
   (rf/dispatch-sync [:initialize])
   (mount-ui views/ui))
