@@ -12,19 +12,23 @@
 
 (defn edit-meal-item-name-panel
   [details]
-  (let [meal-item-id (uuid (:id details))
-        meal-item-dets @(rf/subscribe [:meal-item meal-item-id])
-        field-value (r/atom (:name meal-item-dets))]
+  (let [is-existing-item? (:id details)
+        meal-item-id      (if is-existing-item? (uuid (:id details)) (random-uuid))
+        meal-item-dets    @(rf/subscribe [:meal-item meal-item-id])
+        field-value       (r/atom (:name meal-item-dets))]
     (fn []
       [container
-       [button {:on-click #(rf/dispatch [:navigate-to-element-by-id :meal-item-panel meal-item-id]) :start-icon (r/as-element [arrow-back])} "Back to Meal Item"]
+       (if
+        is-existing-item?
+         [button {:on-click #(rf/dispatch [:navigate-to-element-by-id :meal-item-panel meal-item-id]) :start-icon (r/as-element [arrow-back])} "Back to Meal Item"]
+         [button {:on-click #(rf/dispatch [:navigate :meal-items-list-panel]) :start-icon (r/as-element [arrow-back])} "Back to Meal Item List"])
        [stack {:spacing 2}
-        [text-field {:variant "outlined"
-                     :full-width true
+        [text-field {:variant     "outlined"
+                     :full-width  true
                      :placeholder "Meal Item Name..."
-                     :InputProps {:sx {:typography "h4"}}
-                     :value @field-value
-                     :on-change (fn [e] (reset! field-value (event-value e)))}]
+                     :InputProps  {:sx {:typography "h4"}}
+                     :value       @field-value
+                     :on-change   (fn [e] (reset! field-value (event-value e)))}]
         [stack
          {:direction "row" :justify-content "flex-end" :spacing 2}
          [reset-button [{:value @field-value :original-value (:name meal-item-dets) :atom field-value}]]

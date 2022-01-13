@@ -21,8 +21,8 @@
    [list-item-button
     [list-item-text {:on-click #(rf/dispatch [:navigate-to-element-by-id :meal-item-panel (key meal-item)]) :primary (str (:name (val meal-item)))}]]])
 
-(defn add-new-mean-item []
-  [list-item [list-item-button [list-item-icon [add]] [list-item-text {:primary "Add new item"}]]])
+(defn add-new-meal-item []
+  [list-item [list-item-button {:on-click #(rf/dispatch [:navigate :add-meal-item-panel])}[list-item-icon [add]] [list-item-text {:primary "Add new item"}]]])
 
 (defn meal-item-list
   []
@@ -33,4 +33,4 @@
            (when (seq favourite-items) [divider])
            (doall (map meal-item-list-item non-favourite-items))
            [divider]
-           [add-new-mean-item]]]))
+           [add-new-meal-item]]]))

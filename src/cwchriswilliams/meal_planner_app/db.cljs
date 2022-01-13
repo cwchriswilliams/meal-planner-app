@@ -20,7 +20,8 @@
                         :meal-item-panel
                         :edit-meal-item-name-panel
                         :add-step-panel
-                        :edit-step-panel})
+                        :edit-step-panel
+                        :add-meal-item-panel})
 
 (s/def ::active-panel-details (s/keys :req-un [::active-panel]))
 (s/def ::meal-item-id uuid?)
